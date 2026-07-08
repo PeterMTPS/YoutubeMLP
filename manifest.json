@@ -1,0 +1,43 @@
+{
+  "manifest_version": 3,
+  "name": "PonyTube Pastel Theme",
+  "description": "Transforma o YouTube em um tema pastel inspirado em My Little Pony.",
+  "version": "1.0.3",
+  "permissions": [
+    "storage"
+  ],
+  "host_permissions": [
+    "*://www.youtube.com/*",
+    "*://m.youtube.com/*"
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "assets/background.png"
+      ],
+      "matches": [
+        "*://www.youtube.com/*",
+        "*://m.youtube.com/*"
+      ]
+    }
+  ],
+  "action": {
+    "default_title": "PonyTube",
+    "default_popup": "popup.html"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "*://www.youtube.com/*",
+        "*://m.youtube.com/*"
+      ],
+      "css": [
+        "content.css"
+      ],
+      "js": [
+        "content.js"
+      ],
+      "run_at": "document_start"
+    }
+  ]
+}

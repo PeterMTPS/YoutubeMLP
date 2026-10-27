@@ -1,7 +1,7 @@
 :root.ponytube-theme {
   color-scheme: light;
   --pt-bg: #fff0f8;
-  --pt-surface: rgba(255, 229, 244, 0.72);
+  --pt-surface: rgba(255, 229, 244, 0.8);
   --pt-surface-strong: rgba(255, 240, 248, 0.9);
   --pt-surface-hover: rgba(255, 218, 239, 0.88);
   --pt-border: rgba(224, 49, 140, 0.34);
@@ -13,7 +13,8 @@
   --pt-yellow: #fff18f;
   --pt-sky: #89dfff;
   --pt-chip: rgba(255, 220, 238, 0.9);
-  --pt-wallpaper-url: none;
+  --pt-wallpaper-url: url("chrome-extension://__MSG_@@extension_id__/assets/background.webp");
+  --pt-wallpaper-opacity: 1;
   --pt-wallpaper-overlay: rgba(255, 242, 249, 0.18);
   --pt-shadow: rgba(224, 49, 140, 0.18);
   --yt-spec-base-background: transparent !important;
@@ -29,13 +30,16 @@
   --yt-spec-static-brand-red: var(--pt-accent) !important;
   --yt-spec-call-to-action: var(--pt-accent-2) !important;
   --yt-spec-themed-blue: var(--pt-accent-2) !important;
+  --yt-spec-badge-chip-background: var(--pt-chip) !important;
+  --yt-spec-10-percent-layer: var(--pt-border) !important;
+  --yt-spec-outline: var(--pt-border) !important;
 }
 
 :root.ponytube-theme.ponytube-ytdark,
 :root.ponytube-theme[dark] {
   color-scheme: dark;
   --pt-bg: #130813;
-  --pt-surface: rgba(53, 24, 51, 0.76);
+  --pt-surface: rgba(53, 24, 51, 0.84);
   --pt-surface-strong: rgba(42, 20, 43, 0.93);
   --pt-surface-hover: rgba(86, 35, 78, 0.88);
   --pt-border: rgba(255, 119, 186, 0.34);
@@ -68,18 +72,34 @@
 :root.ponytube-theme body {
   position: relative;
   color: var(--pt-text) !important;
-  background:
-    linear-gradient(var(--pt-wallpaper-overlay), var(--pt-wallpaper-overlay)),
-    var(--pt-wallpaper-url) center center / cover fixed no-repeat,
-    var(--pt-bg) !important;
+  background: var(--pt-bg) !important;
 }
 
-:root.ponytube-theme body::before {
+/* Wallpaper lives on its own fixed, GPU-composited layer, so scrolling
+   never repaints it (background-attachment: fixed did on every frame). */
+:root.ponytube-theme body::before,
+:root.ponytube-theme body::after {
   content: "";
   position: fixed;
   inset: 0;
   z-index: 0;
   pointer-events: none;
+  contain: strict;
+  transform: translateZ(0);
+}
+
+:root.ponytube-theme body::before {
+  opacity: var(--pt-wallpaper-opacity);
+  background:
+    linear-gradient(var(--pt-wallpaper-overlay), var(--pt-wallpaper-overlay)),
+    var(--pt-wallpaper-url) center / cover no-repeat;
+}
+
+:root.ponytube-theme.ponytube-no-wallpaper body::before {
+  display: none;
+}
+
+:root.ponytube-theme body::after {
   opacity: 0.76;
   background:
     linear-gradient(90deg, #ff5caf 0 16%, #fff18f 16% 32%, #8ff0c3 32% 48%, #89dfff 48% 64%, #d79bff 64% 80%, #ff9bcc 80% 100%) top / 100% 5px no-repeat,
@@ -173,10 +193,6 @@
 :root.ponytube-theme tp-yt-app-drawer,
 :root.ponytube-theme ytd-mini-guide-renderer,
 :root.ponytube-theme #guide-content,
-:root.ponytube-theme ytd-popup-container,
-:root.ponytube-theme tp-yt-paper-dialog,
-:root.ponytube-theme ytd-menu-popup-renderer,
-:root.ponytube-theme ytd-multi-page-menu-renderer,
 :root.ponytube-theme ytd-playlist-panel-renderer,
 :root.ponytube-theme #chat,
 :root.ponytube-theme #panels,
@@ -188,6 +204,18 @@
   background: var(--pt-surface) !important;
   border-color: var(--pt-border) !important;
   color: var(--pt-text) !important;
+}
+
+/* Small floating menus are cheap to blur; huge panels (comments,
+   description, drawer) are not, so they only get a translucent fill. */
+:root.ponytube-theme tp-yt-paper-dialog,
+:root.ponytube-theme ytd-menu-popup-renderer,
+:root.ponytube-theme ytd-multi-page-menu-renderer {
+  background: var(--pt-surface-strong) !important;
+  border-color: var(--pt-border) !important;
+  color: var(--pt-text) !important;
+  border-radius: 14px !important;
+  box-shadow: 0 16px 40px var(--pt-shadow) !important;
   backdrop-filter: blur(14px) saturate(1.08);
 }
 
@@ -238,7 +266,7 @@
 :root.ponytube-theme ytd-channel-renderer {
   background: rgba(255, 225, 241, 0.2) !important;
   border-radius: 8px !important;
-  transition: background-color 150ms ease, box-shadow 150ms ease;
+  transition: background-color 150ms ease;
 }
 
 :root.ponytube-theme ytd-comment-thread-renderer:hover,
@@ -348,7 +376,7 @@
 }
 
 :root.ponytube-theme ytd-watch-flexy #movie_player .ytp-progress-bar-container {
-  filter: drop-shadow(0 0 8px rgba(255, 92, 175, 0.72));
+  box-shadow: 0 0 8px rgba(255, 92, 175, 0.6);
 }
 
 :root.ponytube-theme ytd-watch-flexy #movie_player .ytp-progress-list,
@@ -402,4 +430,65 @@
   background: linear-gradient(180deg, var(--pt-accent), var(--pt-accent-2));
   border: 3px solid var(--pt-bg);
   border-radius: 999px;
+}
+
+/* ---------- Polish ---------- */
+
+:root.ponytube-theme ytd-thumbnail #thumbnail,
+:root.ponytube-theme ytd-thumbnail a#thumbnail {
+  border-radius: 14px !important;
+  transition: box-shadow 160ms ease;
+}
+
+:root.ponytube-theme ytd-rich-item-renderer:hover ytd-thumbnail #thumbnail,
+:root.ponytube-theme ytd-video-renderer:hover ytd-thumbnail #thumbnail,
+:root.ponytube-theme ytd-compact-video-renderer:hover ytd-thumbnail #thumbnail {
+  box-shadow: 0 0 0 2px var(--pt-accent-hot), 0 10px 24px var(--pt-shadow) !important;
+}
+
+:root.ponytube-theme :focus-visible {
+  outline: 2px solid var(--pt-accent) !important;
+  outline-offset: 2px;
+}
+
+:root.ponytube-theme ytd-watch-metadata,
+:root.ponytube-theme #description.ytd-watch-metadata,
+:root.ponytube-theme ytd-comments {
+  border-radius: 14px !important;
+}
+
+:root.ponytube-theme #description.ytd-watch-metadata {
+  border: 1px solid var(--pt-border) !important;
+}
+
+/* ---------- Lite mode: no blur, no decorative layer ---------- */
+
+:root.ponytube-theme.ponytube-lite ytd-masthead,
+:root.ponytube-theme.ponytube-lite #masthead-container,
+:root.ponytube-theme.ponytube-lite tp-yt-paper-dialog,
+:root.ponytube-theme.ponytube-lite ytd-menu-popup-renderer,
+:root.ponytube-theme.ponytube-lite ytd-multi-page-menu-renderer {
+  backdrop-filter: none !important;
+}
+
+:root.ponytube-theme.ponytube-lite body::after {
+  display: none;
+}
+
+:root.ponytube-theme.ponytube-lite ytd-masthead,
+:root.ponytube-theme.ponytube-lite #masthead-container {
+  box-shadow: none !important;
+}
+
+:root.ponytube-theme.ponytube-lite ytd-watch-flexy #movie_player .ytp-progress-bar-container,
+:root.ponytube-theme.ponytube-lite ytd-watch-flexy #movie_player .ytp-scrubber-button {
+  box-shadow: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root.ponytube-theme ytd-thumbnail #thumbnail,
+  :root.ponytube-theme ytd-comment-thread-renderer,
+  :root.ponytube-theme ytd-channel-renderer {
+    transition: none !important;
+  }
 }

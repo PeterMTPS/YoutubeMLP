@@ -8,16 +8,49 @@
   </head>
   <body>
     <main class="popup">
-      <section class="panel">
+      <header class="hero">
         <p class="eyebrow">YouTubeMLP</p>
         <h1>Pinkie Pie Tema</h1>
-        <label class="toggle">
-          <input id="enabled" type="checkbox" checked>
-          <span class="track">
-            <span class="thumb"></span>
+        <p class="status" id="status" aria-live="polite">Tema ativo</p>
+      </header>
+
+      <section class="panel" aria-label="Configurações">
+        <label class="row toggle row-main">
+          <span class="row-text">
+            <span class="row-title">Ativar tema</span>
+            <span class="row-hint">Liga ou desliga tudo</span>
           </span>
-          <span class="label-text">Tema ativo</span>
+          <input id="ponytubeEnabled" type="checkbox" role="switch">
+          <span class="track" aria-hidden="true"><span class="thumb"></span></span>
         </label>
+
+        <div class="group" id="options">
+          <label class="row toggle">
+            <span class="row-text">
+              <span class="row-title">Papel de parede</span>
+              <span class="row-hint">Imagem da Pinkie no fundo</span>
+            </span>
+            <input id="ponytubeWallpaper" type="checkbox" role="switch">
+            <span class="track" aria-hidden="true"><span class="thumb"></span></span>
+          </label>
+
+          <div class="row slider-row" id="opacityRow">
+            <label class="row-text" for="ponytubeWallpaperOpacity">
+              <span class="row-title">Intensidade do fundo</span>
+              <span class="row-hint" id="opacityValue">100%</span>
+            </label>
+            <input id="ponytubeWallpaperOpacity" type="range" min="20" max="100" step="5">
+          </div>
+
+          <label class="row toggle">
+            <span class="row-text">
+              <span class="row-title">Modo leve</span>
+              <span class="row-hint">Sem desfoque nem brilhos — mais rápido</span>
+            </span>
+            <input id="ponytubeLite" type="checkbox" role="switch">
+            <span class="track" aria-hidden="true"><span class="thumb"></span></span>
+          </label>
+        </div>
       </section>
     </main>
 

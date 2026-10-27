@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "PonyTube Pastel Theme",
   "description": "Transforma o YouTube em um tema pastel inspirado em My Little Pony.",
-  "version": "1.0.3",
+  "version": "1.1.0",
   "permissions": [
     "storage"
   ],
@@ -13,7 +13,7 @@
   "web_accessible_resources": [
     {
       "resources": [
-        "assets/background.png"
+        "assets/background.webp"
       ],
       "matches": [
         "*://www.youtube.com/*",

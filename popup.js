@@ -1,8 +1,7 @@
 const PONYTUBE_DEFAULTS = {
   ponytubeEnabled: true,
-  ponytubeWallpaper: true,
-  ponytubeWallpaperOpacity: 100,
-  ponytubeLite: false
+  ponytubeWallpaper: false,
+  ponytubeWallpaperOpacity: 30
 };
 
 const inputs = Object.fromEntries(
@@ -29,8 +28,7 @@ function readForm() {
   return {
     ponytubeEnabled: inputs.ponytubeEnabled.checked,
     ponytubeWallpaper: inputs.ponytubeWallpaper.checked,
-    ponytubeWallpaperOpacity: Number(inputs.ponytubeWallpaperOpacity.value),
-    ponytubeLite: inputs.ponytubeLite.checked
+    ponytubeWallpaperOpacity: Number(inputs.ponytubeWallpaperOpacity.value)
   };
 }
 

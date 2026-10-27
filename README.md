@@ -13,5 +13,11 @@ Extensão do Chrome que deixa o YouTube com cara de My Little Pony (Pinkie Pie).
 ## Opções (no ícone da extensão)
 
 - **Ativar tema** — liga/desliga tudo.
-- **Papel de parede** e **intensidade do fundo**.
-- **Modo leve** — tira desfoque e brilhos; use em PCs mais fracos.
+- **Papel de parede** — Pinkie Pie suave no fundo (desligado por padrão), com controle de intensidade.
+
+## Como funciona
+
+O YouTube gera suas cores a partir de variáveis CSS (tokens) com nomes que mudam a cada versão.
+Em vez de fixar cores, o `palette.js` lê a paleta atual do YouTube (claro e escuro) e cria uma
+versão rosada: cinzas viram tons de rosa/ameixa, azuis viram lavanda e vermelhos viram rosa-choque.
+O resultado fica em cache, então nas próximas visitas o tema aparece na hora, sem custo.
